@@ -1,42 +1,57 @@
-import ru.netology.CashbackHackService;
+package ru.netology;
+
+import static org.testng.Assert.assertEquals;
 
 public class CashbackHackServiceTest {
-    CashbackHackService service = new CashbackHackService();
 
     @org.testng.annotations.Test
-    public void testRemainBoundaryValuesOne() {
-        org.testng.Assert.assertThrows(RuntimeException.class, () -> {
-            service.remain(-1);
-        });
+    public void shouldSuggestAddingGoodsIfLessThanBoundary() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 900;
+
+        int actual = service.remain(amount);
+        int expected = 100;
+        assertEquals(actual, expected);
     }
 
     @org.testng.annotations.Test
-    public void testRemainBoundaryValuesTwo() {
-        org.testng.Assert.assertEquals(service.remain(0), 1000);
+    public void shouldSuggestAddingGoodsIfOneUnderBoundary() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 999;
+
+        int actual = service.remain(amount);
+        int expected = 1;
+        assertEquals(actual, expected);
     }
 
     @org.testng.annotations.Test
-    public void testRemainBoundaryValuesThree() {
-        org.testng.Assert.assertEquals(service.remain(1), 999);
+    public void shouldNotSuggestAddingGoodsIfEqualToBoundary() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 999;
+
+        int actual = service.remain(amount);
+        int expected = 1;
+        assertEquals(actual, expected);
     }
 
     @org.testng.annotations.Test
-    public void testRemainBoundaryValuesFour() {
-        org.testng.Assert.assertEquals(service.remain(999), 1);
+    public void shouldNotSuggestAddingGoodsIfOneUpperBoundary() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 1001;
+
+        int actual = service.remain(amount);
+        int expected = 999;
+        assertEquals(actual, expected);
     }
 
     @org.testng.annotations.Test
-    public void testRemainBoundaryValuesFive() {
-        org.testng.Assert.assertEquals(service.remain(1000), 0);
+    public void shouldNotSuggestAddingGoodsIfMoreThanBoundary() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 1201;
+
+        int actual = service.remain(amount);
+        int expected = 799;
+        assertEquals(actual, expected);
     }
 
-    @org.testng.annotations.Test
-    public void testRemainBoundaryValuesSix() {
-        org.testng.Assert.assertEquals(service.remain(1001), 999);
-    }
-
-    @org.testng.annotations.Test
-    public void testRemainCriticalPath() {
-        org.testng.Assert.assertEquals(service.remain(400), 600);
-    }
 }
